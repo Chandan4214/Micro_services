@@ -1,9 +1,9 @@
 const jwt=require("jsonwebtoken");
-const userModel=require("../models/user.models.js");
+const captainModel=require("../models/captain.models.js");
 const { BlacklistToken } = require("../models/blacklisttoken.model.js");
 
 
-module.exports.userAuth=async(req,res,next)=>{
+module.exports.captainAuth=async(req,res,next)=>{
   try {
         const token=req.cookies.jwt   || req.headers.authorization.split(" ")[1];
         console.log(token);
@@ -11,17 +11,17 @@ module.exports.userAuth=async(req,res,next)=>{
         if (!token){
           return res.status(401).json({ error: "Unauthorized" });
         }
-        const isBlacklistedToken=await BlacklistToken.findOne({token});
-        if(isBlacklistedToken){
-          return res.status(401).json({ error: "Unauthorized" });
-        }
+        // const isBlacklistedToken=await BlacklistToken.findOne({token});
+        // if(isBlacklistedToken){
+        //   return res.status(401).json({ error: "Unauthorized" });
+        // }
 
         const decoded=jwt.verify(token,process.env.JWT_SECRET);
-        const user=await userModel.findById(decoded.userId);
-        if (!user){
-          return res.status(401).json({ error: "Unauthorized" });
+        const captain=await captainModel.findById(decoded.captainId);
+        if (!captain){
+          return res.status(401).json({ error: "Unauthorized capatin not find" });
         }
-        req.user=user;
+        req.captain=captain;
         next();
   } catch (error) {
     return res.status(500).json({ error: error.message } );
