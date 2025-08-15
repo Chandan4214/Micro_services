@@ -6,6 +6,9 @@ const app = express();
 const connectToDB = require("./db/db.js");
 const userRoutes = require('./routes/user.routes');
 const cookieParser = require('cookie-parser');
+const rabbitMq=require("./service/rabbit.js");
+
+rabbitMq.connect()
 
 // Connect to DB
 connectToDB();

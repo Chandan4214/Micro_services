@@ -78,11 +78,13 @@ module.exports.login = async (req, res) => {
 module.exports.logout = async (req, res) => {
   try {
     const token = req.cookies.jwt;
-    if (token) {
-      const blacklistedToken = new BlacklistToken({ token });
-      await blacklistedToken.save();
+  
+    if (!token) {
+        res.status(401).json({ error: "Unauthorized token" });
     }
-
+     await BlacklistToken.deleteMany({token});
+     const blacklistedToken = new BlacklistToken({ token });
+     await blacklistedToken.save();
     res.clearCookie("jwt");
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
@@ -94,7 +96,7 @@ module.exports.logout = async (req, res) => {
 
 
 
-
+   
 module.exports.profile = async (req, res) => {
   try {
     const captain = req.captain;
@@ -118,14 +120,3 @@ module.exports.toggleAvailability = async (req, res) => {
   }
 };
 
-module.exports.toggleAvailability = async (req, res) => {
-  try {
-    const captain = await captainModel.findById(req.captain._id);
-    captain.isAvailable = !captain.isAvailable;
-    await captain.save();
-    res.status(200).json({ message: "Availability toggled successfully", captain });
-  } catch (error) {
-    console.error("Toggle availability error:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};

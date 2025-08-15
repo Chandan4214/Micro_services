@@ -6,6 +6,8 @@ const app = express();
 const connectToDB = require("./db/db.js");
 const captainRoutes = require('./routes/captain.routes.js');
 const cookieParser = require('cookie-parser');
+const connectToRabbitMQ =require("./service/rabbit.js");
+connectToRabbitMQ.connect()
 
 // Connect to DB
 connectToDB();

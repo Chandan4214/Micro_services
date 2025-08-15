@@ -1,11 +1,11 @@
 const jwt=require("jsonwebtoken");
 const userModel=require("../models/user.models.js");
-const { BlacklistToken } = require("../models/blacklisttoken.model.js");
+const BlacklistToken  = require("../models/blacklisttoken.model.js");
 
 
 module.exports.userAuth=async(req,res,next)=>{
   try {
-        const token=req.cookies.jwt   || req.headers.authorization.split(" ")[1];
+        const token= req.cookies.jwt   ||  req.headers.authorization.split(" ")[1];
         console.log(token);
 
         if (!token){
