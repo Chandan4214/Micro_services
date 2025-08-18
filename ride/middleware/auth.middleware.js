@@ -4,12 +4,12 @@ const axios=require('axios')
 module.exports.userAuth=async(req,res,next)=>{
 
   try {
-    const token=res.cookies.token || req.headers.authorization.split(" ")[1];
+    const token=req.cookies?.token || req.headers.authorization?.split(" ")[1];
     if(!token){
       return res.status(401).json({error:"Unauthorized"})
     }
     const decoded=jwt.verify(token,process.env.JWT_SECRET);
-    const response=await axios.get(`${BASE_URL}/user/api/profile`,{
+    const response=await axios.get(`${process.env.BASE_URL}/user/api/profile`,{
           headers:{
             authorization:`Bearer ${token}`
           }

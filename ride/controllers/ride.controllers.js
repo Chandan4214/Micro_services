@@ -1,4 +1,5 @@
 const rideModel = require("../models/ride.models.js");
+const {subscribeToQueue,publishToQueue} =require('../service/rabbit.js')
 
 module.exports.createRide=async(req,res,next)=>{
       const {pickup,desitanation}=req.body;
@@ -8,7 +9,9 @@ module.exports.createRide=async(req,res,next)=>{
             pickup,
             desitanation
       })
-      await newRide.save();
-      res.status(201).json({message:"Ride created successfully"});
+
+      publishToQueue("new-ride",JSON.stringify(newRide));
+      // await newRide.save();
+      return res.status(201).json({message:"Ride created successfully"});
 
 }

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { BlacklistToken } = require("../models/blacklisttoken.model.js");
 // controllers/auth.controller.js
-
+const {subscribeToQueue}=require("../service/rabbit.js")
 
 
 
@@ -119,4 +119,11 @@ module.exports.toggleAvailability = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+subscribeToQueue("new-ride",(data)=>{
+
+  console.log(data);
+}
+)
 

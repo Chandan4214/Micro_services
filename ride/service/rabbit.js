@@ -1,7 +1,7 @@
 const amqp = require('amqplib');
 
 const RABBITMQ_URL = process.env.RABBIT_URL;
-let connection,channel;
+let channel;
 
 async function connect() {
   
